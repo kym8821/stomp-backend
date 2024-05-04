@@ -1,4 +1,4 @@
-package org.kym8821.websocket.config
+package org.kym8821.websocket.config.socket
 
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.config.ChannelRegistration

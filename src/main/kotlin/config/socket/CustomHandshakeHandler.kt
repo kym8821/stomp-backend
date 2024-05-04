@@ -1,4 +1,4 @@
-package org.kym8821.websocket.config
+package org.kym8821.websocket.config.socket
 
 import org.springframework.http.server.ServerHttpRequest
 import org.springframework.http.server.ServletServerHttpRequest

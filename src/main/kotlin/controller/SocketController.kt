@@ -14,12 +14,14 @@ import org.springframework.messaging.simp.annotation.SendToUser
 import org.springframework.stereotype.Controller
 import java.security.Principal
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import org.kym8821.websocket.service.KafkaProducer
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 
 @Controller
 class SocketController(
-    val template: SimpMessagingTemplate,
-    val mapper:ObjectMapper = jacksonObjectMapper()
+    val messageTemplate: SimpMessagingTemplate,
+    val kafkaProducer: KafkaProducer,
 ){
     fun createMessageHeaders(
         accessor: SimpMessageHeaderAccessor,
@@ -36,15 +38,20 @@ class SocketController(
     fun sendNotice(@Payload message: Message, principal: Principal){
         print("sendTO : ")
         println(principal)
-        template.convertAndSend("/topic/notice",message)
+        messageTemplate.convertAndSend("/topic/notice",message)
     }
 
     @MessageMapping("/sendToUser")
     fun sendMessageToUser(@Payload message: UserMessage, principal: Principal, accessor: SimpMessageHeaderAccessor){
-        print("sendToUser : ")
-        println(principal.name)
+
+        print("sendToUser : ${principal.name}")
         println("receiver : " + message.username)
         println("message : " + message.message)
-        template.convertAndSendToUser(message.username, "/queue/sendToUser", message, createMessageHeaders(accessor, principal))
+        val msg = "test"
+        kafkaProducer.sendToUser(message);
+//        message.username?.let {
+//            template.convertAndSendToUser(it, "/queue/sendToUser", message, createMessageHeaders(accessor, principal))
+//        }
+
     }
 }

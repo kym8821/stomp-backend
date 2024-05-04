@@ -1,4 +1,4 @@
-package org.kym8821.websocket.config
+package org.kym8821.websocket.config.socket
 
 import org.springframework.stereotype.Component
 import org.springframework.web.socket.TextMessage
